@@ -1,3 +1,5 @@
+// rr_p
+// Prioridade menor = mais alta prioridade
 #include "schedule_rr_p.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,25 +26,22 @@ void add(char *name, int priority, int burst) {
 
 
 void schedule() {
-    int tasks_restantes = 1;
+    
+    for (int prioridade = MIN_PRIORITY; prioridade <= MAX_PRIORITY; prioridade++) {
+        if (priority_fila[prioridade] == NULL)
+            continue;
 
-    while (tasks_restantes) {
-        tasks_restantes = 0;
 
-        for (int prioridade = MIN_PRIORITY; prioridade <= MAX_PRIORITY; prioridade++) {
-            if (priority_fila[prioridade] == NULL)
-                continue;
 
-            tasks_restantes = 1;
-
+        while (priority_fila[prioridade] != NULL) {
             struct node *aux = priority_fila[prioridade];
             Task *t = aux->task;
 
             int exec_time;
             if (t->burst > QUANTUM) {
-                  exec_time = QUANTUM;
+                exec_time = QUANTUM;
             } else {
-                  exec_time = t->burst;
+                exec_time = t->burst;
             }
 
             run(t, exec_time);
@@ -58,5 +57,6 @@ void schedule() {
             }
         }
     }
+    
 }
 
