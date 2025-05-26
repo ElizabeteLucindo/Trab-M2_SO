@@ -31,8 +31,6 @@ void schedule() {
         if (priority_fila[prioridade] == NULL)
             continue;
 
-
-
         while (priority_fila[prioridade] != NULL) {
             struct node *aux = priority_fila[prioridade];
             Task *t = aux->task;
@@ -55,6 +53,7 @@ void schedule() {
                 free(t->name);
                 free(t);
             }
+            
         }
     }
     
