@@ -31,3 +31,9 @@ list.o: list.c list.h
 
 CPU.o: CPU.c CPU.h
 	$(CC) $(CFLAGS) -c CPU.c
+
+rr: driver.o list.o CPU.o schedule_rr.o
+	$(CC) $(CFLAGS) -o rr driver.o schedule_rr.o list.o CPU.o
+
+schedule_rr.o: schedule_rr.c
+	$(CC) $(CFLAGS) -c schedule_rr.c
