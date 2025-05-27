@@ -9,7 +9,7 @@
 #include "timer.h"
 
 #define MIN_PRIORITY 1
-#define AGING_THRESHOLD  10
+#define AGING  10
 #define TIME_SLICE   10   
 
 struct node *task_list = NULL;
@@ -31,46 +31,34 @@ void schedule() {
     start_timer();
 
     while (task_list != NULL) {
-        // Escolhe a tarefa de maior prioridade
+        
         struct node *temp = task_list;
-        struct node *highest = task_list;
+        struct node *maior_p = task_list;
 
-        // Aging pré-seleção
-        while (temp != NULL) {
-            if (temp->task->wait_time >= AGING_THRESHOLD && temp->task->priority > MIN_PRIORITY) {
-                temp->task->priority--;
-                temp->task->wait_time = 0;
-                printf("Aging: Tarefa %s subiu prioridade para %d\n", temp->task->name, temp->task->priority);
-            }
-            temp = temp->next;
-        }
-
-        // Seleciona a task com maior prioridade (e mais espera em caso de empate)
+        
         temp = task_list;
         while (temp != NULL) {
-            if (temp->task->priority < highest->task->priority ||
-                (temp->task->priority == highest->task->priority &&
-                 temp->task->wait_time > highest->task->wait_time)) {
-                highest = temp;
+            if (temp->task->priority < maior_p->task->priority ||
+                (temp->task->priority == maior_p->task->priority &&
+                 temp->task->wait_time > maior_p->task->wait_time)) {
+                maior_p = temp;
             }
             temp = temp->next;
         }
 
-        int run_time = highest->task->burst;
-
-        for (int i = 0; i < run_time; i++) {
-            while (flag_estouro == 0); // espera o tick
+        for (int i = 0; i < maior_p->task->burst; i++) {
+            while (flag_estouro == 0); 
             flag_estouro = 0;
-            run(highest->task, 1);
+            run(maior_p->task, 1);
 
-            // Aging dinâmico: incrementa wait_time das outras tarefas
+            
             temp = task_list;
             while (temp != NULL) {
-                if (temp != highest) {
+                if (temp != maior_p) {
                     temp->task->wait_time++;
 
-                    if (temp->task->wait_time >= AGING_THRESHOLD &&
-                        temp->task->priority > MIN_PRIORITY) {
+                    if (temp->task->wait_time >= AGING &&
+                        temp->task->priority > 1) {
                         temp->task->priority--;
                         temp->task->wait_time = 0;
                         printf("Aging: Tarefa %s subiu prioridade para %d\n", temp->task->name, temp->task->priority);
@@ -80,8 +68,8 @@ void schedule() {
             }
         }
 
-        highest->task->burst = 0; // tarefa finalizada
-        delete(&task_list, highest->task);
+        maior_p->task->burst = 0; // tarefa finalizada
+        delete(&task_list, maior_p->task);
     }
 
     printf("Todas as tarefas foram finalizadas.\n");

@@ -7,9 +7,9 @@ volatile int flag_estouro = 0;
 
 void* timer_thread(void* arg) {
     while (1) {
-        usleep(10);  // 1 ms
+        usleep(10);  
         timer++;       
-        flag_estouro = 1;  // libera 1 unidade de burst
+        flag_estouro = 1;  
     }
     return NULL;
 }
