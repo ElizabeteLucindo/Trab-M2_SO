@@ -44,7 +44,6 @@ void schedule(){
 
         delete(&task_list, t);
 
-        // se ainda restar burst, reinserir no fim
         if (t->burst > 0) {
             insert_end(&task_list, t);
         } else {
