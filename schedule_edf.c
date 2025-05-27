@@ -28,31 +28,29 @@ void schedule() {
     start_timer();
 
     while (task_list != NULL) {
-        struct node *temp = task_list;
-        struct node *earliest = task_list;
+        struct node *aux = task_list;
+        struct node *recente = task_list;
 
-        // Escolhe a tarefa com menor deadline
-        while (temp != NULL) {
-            if (temp->task->deadline < earliest->task->deadline) {
-                earliest = temp;
+        while (aux != NULL) {
+            if (aux->task->deadline < recente->task->deadline) {
+                recente = aux;
             }
-            temp = temp->next;
+            aux = aux->next;
         }
 
         printf("Time %d: Running task %s (Burst: %d, Deadline: %d)\n",
-               timer, earliest->task->name, earliest->task->burst, earliest->task->deadline);
+               timer, recente->task->name, recente->task->burst, recente->task->deadline);
 
-        // Executa a tarefa por cada unidade de tempo (tick)
-        for (int i = 0; i < earliest->task->burst; i++) {
-            while (flag_estouro == 0);  // Espera próximo tick
+        for (int i = 0; i < recente->task->burst; i++) {
+            while (flag_estouro == 0);  
             flag_estouro = 0;
 
-            run(earliest->task, 1); // Executa 1 unidade de tempo
+            run(recente->task, 1); 
         }
 
-        printf("Time %d: Finished task %s\n", timer, earliest->task->name);
+        printf("Time %d: Finished task %s\n", timer, recente->task->name);
 
-        delete(&task_list, earliest->task);  // <- Agora está no lugar certo
+        delete(&task_list, recente->task); 
     }
 }
 
