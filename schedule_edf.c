@@ -12,15 +12,15 @@ int task_id_counter = 1;
 
 // add a task to the list 
 void add_edf(char *name, int priority, int burst, int deadline){
-    Task *newTask = malloc(sizeof(Task));
-    newTask->name = strdup(name);
-    newTask->priority = priority;
-    newTask->burst = burst;
-    newTask->deadline = deadline;
+    Task *t = malloc(sizeof(Task));
+    t->name = strdup(name);
+    t->priority = priority;
+    t->burst = burst;
+    t->deadline = deadline;
     t->wait_time = 0;
-    newTask->tid = task_id_counter++;
+    t->tid = task_id_counter++;
 
-    insert_end(&task_list, newTask);
+    insert_end(&task_list, t);
 }
 
 // invoke the scheduler
