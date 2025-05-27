@@ -1,26 +1,15 @@
-#include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
 #include "timer.h"
-
-#define TIME_U 10  
-#define TIME_SLICE   10     
 
 volatile int timer = 0;
 volatile int flag_estouro = 0;
 
 void* timer_thread(void* arg) {
-    int slice_counter = 0;
-
     while (1) {
-        usleep(TIME_U); 
-        timer++;         
-        slice_counter++;
-
-        if (slice_counter >= TIME_SLICE) {
-            flag_estouro = 1; 
-            slice_counter = 0;
-        }
+        usleep(10);  // 1 ms
+        timer++;       
+        flag_estouro = 1;  // libera 1 unidade de burst
     }
     return NULL;
 }
