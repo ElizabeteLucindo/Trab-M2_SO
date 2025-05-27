@@ -17,6 +17,7 @@ void add_edf(char *name, int priority, int burst, int deadline){
     newTask->priority = priority;
     newTask->burst = burst;
     newTask->deadline = deadline;
+    t->wait_time = 0;
     newTask->tid = task_id_counter++;
 
     insert_end(&task_list, newTask);

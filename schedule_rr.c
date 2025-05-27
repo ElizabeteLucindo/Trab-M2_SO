@@ -18,6 +18,7 @@ void add(char *name, int priority, int burst) {
     t->priority = priority;
     t->burst = burst;
     t->deadline = 0;
+    t->wait_time = 0;
     t->tid = tid_counter++;
 
     insert_end(&task_list, t); 

@@ -17,8 +17,8 @@ rr_p: driver.o list.o CPU.o schedule_rr_p.o
 rr: driver.o list.o CPU.o schedule_rr.o
 	$(CC) $(CFLAGS) -o rr driver.o schedule_rr.o list.o CPU.o
 
-pa: driver.o list.o CPU.o schedule_pa.o
-	$(CC) $(CFLAGS) -o pa driver.o schedule_pa.o list.o CPU.o
+pa: driver.o list.o CPU.o schedule_pa.o timer.o
+	$(CC) $(CFLAGS) -o pa driver.o schedule_pa.o list.o CPU.o timer.o -lpthread
 
 edf: driver_edf.o list.o CPU.o schedule_edf.o timer.o
 	$(CC) $(CFLAGS) -o edf driver_edf.o schedule_edf.o list.o CPU.o timer.o -lpthread
@@ -49,5 +49,5 @@ list.o: list.c list.h
 CPU.o: CPU.c CPU.h
 	$(CC) $(CFLAGS) -c CPU.c
 
-timer.o: timer.c
+timer.o: timer.c timer.h
 	$(CC) $(CFLAGS) -c timer.c
