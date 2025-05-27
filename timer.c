@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include "timer.h"
 
-#define TIME_U 10  // 0.00s
+#define TIME_U 10  
 #define TIME_SLICE   10     
 
 volatile int timer = 0;
