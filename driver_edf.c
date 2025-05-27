@@ -1,6 +1,6 @@
 /**
  * Driver.c
- * RR e RR_p
+ * edf
  * Schedule is in the format
  *
  *  [name] [priority] [CPU burst]
@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
     char *name;
     int priority;
     int burst;
-    
+    int deadline;
+
     in = fopen(argv[1],"r");
     
     while (fgets(task,SIZE,in) != NULL) {
@@ -36,8 +37,12 @@ int main(int argc, char *argv[])
         priority = atoi(strsep(&temp,","));
         burst = atoi(strsep(&temp,","));
 
+        //Only to EDF algorithm
+        deadline = atoi(strsep(&temp, ","));
+
         // add the task to the scheduler's list of tasks
-        add(name,priority,burst);
+        add_edf(name,priority,burst, deadline);
+        
         free(temp);
     }
 
