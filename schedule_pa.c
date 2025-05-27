@@ -32,18 +32,18 @@ void schedule() {
 
     while (task_list != NULL) {
         
-        struct node *temp = task_list;
+        struct node *aux = task_list;
         struct node *maior_p = task_list;
 
         
-        temp = task_list;
-        while (temp != NULL) {
-            if (temp->task->priority < maior_p->task->priority ||
-                (temp->task->priority == maior_p->task->priority &&
-                 temp->task->wait_time > maior_p->task->wait_time)) {
-                maior_p = temp;
+        aux = task_list;
+        while (aux != NULL) {
+            if (aux->task->priority < maior_p->task->priority ||
+                (aux->task->priority == maior_p->task->priority &&
+                 aux->task->wait_time > maior_p->task->wait_time)) {
+                maior_p = aux;
             }
-            temp = temp->next;
+            aux = aux->next;
         }
 
         for (int i = 0; i < maior_p->task->burst; i++) {
@@ -52,19 +52,18 @@ void schedule() {
             run(maior_p->task, 1);
 
             
-            temp = task_list;
-            while (temp != NULL) {
-                if (temp != maior_p) {
-                    temp->task->wait_time++;
+            aux = task_list;
+            while (aux != NULL) {
+                if (aux != maior_p) {
+                    aux->task->wait_time++;
 
-                    if (temp->task->wait_time >= AGING &&
-                        temp->task->priority > 1) {
-                        temp->task->priority--;
-                        temp->task->wait_time = 0;
-                        printf("Aging: Tarefa %s subiu prioridade para %d\n", temp->task->name, temp->task->priority);
+                    if (aux->task->wait_time >= AGING && aux->task->priority > 1) {
+                        aux->task->priority--;
+                        aux->task->wait_time = 0;
+                        printf("Aging: Tarefa %s subiu prioridade para %d\n", aux->task->name, aux->task->priority);
                     }
                 }
-                temp = temp->next;
+                aux = aux->next;
             }
         }
 
