@@ -67,7 +67,7 @@ void schedule() {
             }
         }
 
-        maior_p->task->burst = 0; // tarefa finalizada
+        
         delete(&task_list, maior_p->task);
     }
 
